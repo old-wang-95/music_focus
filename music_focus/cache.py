@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import pickle
 
 
 class Cache:
@@ -17,8 +18,8 @@ class Cache:
             'timeout': timeout,
             'timestamp': time.time()
         }
-        with open(self._get_cache_file_name(key), 'w') as f:
-            f.write(json.dumps(result, ensure_ascii=False))
+        with open(self._get_cache_file_name(key), 'wb') as f:
+            pickle.dump(result, f)
 
     def _exist_cache(self, key):
         cache_file = self._get_cache_file_name(key)
@@ -26,7 +27,7 @@ class Cache:
             return False
 
         with open(cache_file, 'r') as f:
-            result = json.loads(f.read())
+            result = pickle.load(f)
         if time.time() - result['timestamp'] >= result['timeout']:
             os.remove(cache_file)
             return False
