@@ -26,7 +26,7 @@ class Cache:
         if not os.path.exists(cache_file):
             return False
 
-        with open(cache_file, 'r') as f:
+        with open(cache_file, 'rb') as f:
             result = pickle.load(f)
         if time.time() - result['timestamp'] >= result['timeout']:
             os.remove(cache_file)
@@ -35,7 +35,7 @@ class Cache:
         return True
 
     def _get_cache(self, key):
-        with open(self._get_cache_file_name(key), 'r') as f:
+        with open(self._get_cache_file_name(key), 'rb') as f:
             result = json.loads(f.read())
         return result['result']
 
