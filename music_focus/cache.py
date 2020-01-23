@@ -1,7 +1,7 @@
-import json
 import os
-import time
 import pickle
+import time
+from hashlib import sha1
 
 
 class Cache:
@@ -10,7 +10,9 @@ class Cache:
         self._cache_dir = cache_dir
 
     def _get_cache_file_name(self, key):
-        return self._cache_dir + '/' + str(hash(key))
+        s = sha1()
+        s.update(str(key).encode('utf-8'))
+        return self._cache_dir + '/' + s.hexdigest()
 
     def _save_cache(self, key, value, timeout):
         result = {
@@ -36,10 +38,10 @@ class Cache:
 
     def _get_cache(self, key):
         with open(self._get_cache_file_name(key), 'rb') as f:
-            result = json.loads(f.read())
+            result = pickle.load(f)
         return result['result']
 
-    def cache(self, key, func, timeout=60 * 10, *func_args, **func_kwargs):
+    def cache(self, key, func, *func_args, timeout=60 * 10, **func_kwargs):
         if self._exist_cache(key):
             return self._get_cache(key)
         value = func(*func_args, **func_kwargs)
