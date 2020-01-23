@@ -38,9 +38,9 @@ class Cache:
             result = json.loads(f.read())
         return result['result']
 
-    def cache(self, key, func, timeout=60 * 10, *args, **kwargs):
+    def cache(self, key, func, timeout=60 * 10, *func_args, **func_kwargs):
         if self._exist_cache(key):
             return self._get_cache(key)
-        value = func(*args, **kwargs)
+        value = func(*func_args, **func_kwargs)
         self._save_cache(key, value, timeout)
         return value
