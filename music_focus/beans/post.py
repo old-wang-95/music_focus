@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from datetime import datetime
 from typing import List
 
-from app.beans.comment import Comment
+from music_focus.beans.comment import Comment
 
 
 @dataclass
