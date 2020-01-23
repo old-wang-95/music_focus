@@ -14,7 +14,7 @@ class Test(unittest.TestCase):
 
         def func(word):
             print('run')
-            return 'Hello, {}'.format(word)
+            return 'hello, {}'.format(word)
 
         print('1~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         r = Cache().cache('test', func, timeout=10, word='world')
