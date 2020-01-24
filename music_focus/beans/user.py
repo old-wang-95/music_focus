@@ -10,7 +10,7 @@ class Gender(Enum):
 @dataclass
 class User:
     """
-    每种tab [profile, weibo, video, super_topic, album], 都是一个container
+    每种tab [profile, posts, video, super_topic, album], 都是一个container
     sina都会有一个container id
     """
 
@@ -23,7 +23,7 @@ class User:
     follow_cnt: int
 
     profile: int
-    weibo: int
+    posts: int
     video: int
     super_topic: int
     album: int
