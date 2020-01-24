@@ -19,8 +19,8 @@ class Test(unittest.TestCase):
         user = User(id=1613258127, name='宋冬野',
                     gender=Gender.male, verified=True, description='', followers_cnt=0, follow_cnt=0,
                     profile=0, posts=1076031613258127, video=0, super_topic=0, album=0)
-        user = weibo_api.get_posts_by_user(user)
-        print(user)
+        posts = weibo_api.get_posts_by_user(user)
+        print(posts)
 
     def tearDown(self):
         pass
