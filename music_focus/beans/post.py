@@ -7,11 +7,12 @@ from music_focus.beans.comment import Comment
 
 @dataclass
 class Post:
-    user_id: str
+    id: int
+    user_id: int
     user_name: str
     time: datetime
     content: str
-    share_num: int
-    comment_num: int
-    like_num: int
+    share_cnt: int
+    comment_cnt: int
+    like_cnt: int
     comments: List[Comment]
