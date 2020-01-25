@@ -1,6 +1,6 @@
 import unittest
 
-from music_focus import weibo_api
+from music_focus.api import weibo_api
 from music_focus.beans.user import User, Gender
 
 

@@ -1,7 +1,7 @@
 import time
 import unittest
 
-from music_focus.cache import Cache
+from music_focus.utils.cache import Cache
 
 
 class Test(unittest.TestCase):

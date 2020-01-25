@@ -4,7 +4,7 @@ import requests
 
 from music_focus.beans.post import Post
 from music_focus.beans.user import User, Gender
-from music_focus.cache import Cache
+from music_focus.utils.cache import Cache
 from music_focus.utils import dt_utils
 
 
