@@ -15,9 +15,10 @@ class WorkflowBase(metaclass=abc.ABCMeta):
     def run(self, workflow_input):
         assert len(self._processors) > 0, 'no processor be loaded!'
         workflow_output = {}
+        tmp_result = {}
         for processor in self._processors:
             logger.info('start to run processor: {}'.format(processor.__name__))
-            processor.run(workflow_input, workflow_output)
+            processor.run(workflow_input, tmp_result, workflow_output)
             logger.info('processor: {} run finish'.format(processor.__name__))
         assert 'result' in workflow_output, 'can not find result in workflow_output!'
         return workflow_output['result']
