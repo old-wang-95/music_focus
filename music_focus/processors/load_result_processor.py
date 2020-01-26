@@ -26,7 +26,7 @@ class LoadResultProcessor(ProcessorBase):
 
     @staticmethod
     def _find_newest_result_file(dir_name, rtype, file_formatter):
-        return max([f for f in os.listdir(dir_name) if rtype in f],
+        return max([f for f in os.listdir(dir_name) if rtype in f and 'pkl' in f],
                    key=lambda f: datetime.strptime(f, file_formatter))
 
     @staticmethod
