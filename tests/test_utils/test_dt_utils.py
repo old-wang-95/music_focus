@@ -12,7 +12,7 @@ class Test(unittest.TestCase):
     def test(self):
         print('test~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
         print('now\t{}'.format(datetime.now()))
-        time_strs = ['15分钟前', '10秒前', '1小时前', '01-21', '2018-11-30', '']
+        time_strs = ['15分钟前', '10秒前', '1小时前', '01-21', '2018-11-30', '昨天 12:00']
         for time_str in time_strs:
             print('{}\t{}'.format(time_str, dt_utils.parse_date_time(time_str)))
 

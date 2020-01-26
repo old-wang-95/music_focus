@@ -28,5 +28,9 @@ def parse_date_time(time_str):
         else:
             raise ValueError('error split with -, illegal time str: {}'.format(time_str))
         return datetime(year=year, month=month, day=day)
+    elif '昨天' in time_str:
+        hour, minute = time_str.split(' ')[-1].split(':')
+        return datetime(year=now.year, month=now.month, day=now.day,
+                        hour=int(hour), minute=int(minute)) - timedelta(days=1)
     else:
         raise ValueError('illegal time str: {}'.format(time_str))
