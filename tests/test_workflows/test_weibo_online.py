@@ -1,4 +1,7 @@
+import json
 import unittest
+
+from music_focus.workflows.weibo_online import WeiboOnline
 
 
 class Test(unittest.TestCase):
@@ -7,7 +10,12 @@ class Test(unittest.TestCase):
         pass
 
     def test(self):
-        pass
+        workflow_input = {
+            'result_type': 'posts'
+        }
+        wf = WeiboOnline()
+        r = wf.run(workflow_input)
+        print(json.dumps(r, ensure_ascii=False, indent=2))
 
     def tearDown(self):
         pass
