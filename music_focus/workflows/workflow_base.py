@@ -7,13 +7,14 @@ class WorkflowBase(metaclass=abc.ABCMeta):
 
     def __init__(self):
         self._processors = []
+        self.load_processors()
+        assert len(self._processors) > 0, 'no processor be loaded!'
 
     @abc.abstractmethod
     def load_processors(self):
         pass
 
     def run(self, workflow_input):
-        assert len(self._processors) > 0, 'no processor be loaded!'
         workflow_output = {}
         tmp_result = {}
         for processor in self._processors:
