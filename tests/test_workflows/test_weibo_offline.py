@@ -1,5 +1,7 @@
 import unittest
 
+from music_focus.workflows.weibo_offline import WeiboOffline
+
 
 class Test(unittest.TestCase):
 
@@ -7,7 +9,10 @@ class Test(unittest.TestCase):
         pass
 
     def test(self):
-        pass
+        workflow_input = {}
+        wf = WeiboOffline()
+        r = wf.run(workflow_input)
+        print(r)
 
     def tearDown(self):
         pass
