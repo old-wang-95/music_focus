@@ -13,10 +13,13 @@ class SaveResultProcessor(ProcessorBase):
         result = {
             'scores': tmp_result['scores']
         }
+        rtype = 'result'
         if 'posts' in tmp_result:
             result['posts'] = tmp_result['posts']
+            rtype = 'posts'
         elif 'focuses' in tmp_result:
             result['focuses'] = tmp_result['focuses']
-        file_name = datetime.now().strftime('result_%Y-%m-%d_%H:%M:%S.pkl')
+            rtype = 'focuses'
+        file_name = datetime.now().strftime('{}_%Y-%m-%d_%H:%M:%S.pkl'.format(rtype))
         with open('{}/{}'.format(self._data_dir, file_name)) as f:
             pickle.dump(result, f)
