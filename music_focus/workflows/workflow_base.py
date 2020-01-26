@@ -18,8 +18,8 @@ class WorkflowBase(metaclass=abc.ABCMeta):
         workflow_output = {}
         tmp_result = {}
         for processor in self._processors:
-            logger.info('start to run processor: {}'.format(processor.__name__))
+            logger.info('start to run processor: {}'.format(processor.__class__.__name__))
             processor.run(workflow_input, tmp_result, workflow_output)
-            logger.info('processor: {} run finish'.format(processor.__name__))
+            logger.info('processor: {} run finish'.format(processor.__class__.__name__))
         assert 'result' in workflow_output, 'can not find result in workflow_output!'
         return workflow_output['result']
