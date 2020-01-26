@@ -21,5 +21,5 @@ class SaveResultProcessor(ProcessorBase):
             result['focuses'] = tmp_result['focuses']
             rtype = 'focuses'
         file_name = datetime.now().strftime('{}_%Y-%m-%d_%H:%M:%S.pkl'.format(rtype))
-        with open('{}/{}'.format(self._data_dir, file_name)) as f:
+        with open('{}/{}'.format(self._data_dir, file_name), 'wb') as f:
             pickle.dump(result, f)
