@@ -23,3 +23,4 @@ class SaveResultProcessor(ProcessorBase):
         file_name = datetime.now().strftime('{}_%Y-%m-%d_%H:%M:%S.pkl'.format(rtype))
         with open('{}/{}'.format(self._data_dir, file_name), 'wb') as f:
             pickle.dump(result, f)
+        workflow_output['result'] = file_name
