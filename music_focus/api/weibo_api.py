@@ -1,11 +1,15 @@
 import json
+import urllib.parse
 
 import requests
+from bs4 import BeautifulSoup
 
+from music_focus.beans.focus import Focus
 from music_focus.beans.post import Post
 from music_focus.beans.user import User, Gender
 from music_focus.utils import dt_utils
 from music_focus.utils.cache import Cache
+from music_focus.utils.number_utils import parse_number
 
 
 def get_user_info(user_id, use_cache=True):
@@ -19,10 +23,7 @@ def get_user_info(user_id, use_cache=True):
     :return:
     """
     url = 'https://m.weibo.cn/api/container/getIndex?type=uid&value={}'.format(user_id)
-    if use_cache:
-        res = Cache().cache(url, requests.get, url)
-    else:
-        res = requests.get(url)
+    res = Cache().cache(url, requests.get, url) if use_cache else requests.get(url)
     assert res.status_code == 200, \
         'get {} user_info fail, status code: {}, text: {}'.format(user_id, res.status_code, res.text)
 
@@ -62,10 +63,7 @@ def get_posts_by_user(user, use_cache=True):
     :return:
     """
     url = 'https://m.weibo.cn/api/container/getIndex?type=uid&value={}&containerid={}'.format(user.id, user.posts)
-    if use_cache:
-        res = Cache().cache(url, requests.get, url)
-    else:
-        res = requests.get(url)
+    res = Cache().cache(url, requests.get, url) if use_cache else requests.get(url)
     assert res.status_code == 200, \
         'get {} posts fail, status code: {}, text: {}'.format(user, res.status_code, res.text)
 
@@ -88,3 +86,91 @@ def get_posts_by_user(user, use_cache=True):
         posts.append(post)
 
     return posts
+
+
+def get_focuses_by_user(user, use_cache=True):
+    """
+    根据user, 获取相关的热点(微博话题)
+
+    :param user:
+    :param use_cache:
+    :return:
+    """
+    url = 'https://m.weibo.cn/api/container/getIndex?type=uid&value={}&containerid={}'.format(user.id, user.posts)
+    res = Cache().cache(url, requests.get, url) if use_cache else requests.get(url)
+    assert res.status_code == 200, \
+        'get {} focuses fail, status code: {}, text: {}'.format(user, res.status_code, res.text)
+
+    focuses = []
+    data = json.loads(res.text)
+    for card in data['data']['cards']:
+        if card['card_type'] != 11:
+            continue
+        for card_item in card['card_group']:
+            if card_item['card_type'] != 17:
+                continue
+            for item in card_item['group']:
+                focus_title = item['title_sub']
+                focus_info = _parse_focus_by_title(focus_title)
+                focus = Focus(
+                    title=focus_title,
+                    description=focus_info['description'],
+                    recent_read=focus_info['recent_read'],
+                    read_cnt=focus_info['read_cnt'],
+                    discuss_cnt=focus_info['discuss_cnt'],
+                    member_cnt=focus_info['member_cnt'],
+                    link='https://m.weibo.cn/search?containerid=' +
+                         urllib.parse.quote('231522type=1&t=10&q=' + focus_title)
+                )
+                focuses.append(focus)
+    return focuses
+
+
+def _parse_focus_by_title(focus_title, use_cache=True):
+    """
+    根据热点标题解析热点
+
+    目前热点就是微博上的话题
+    :param focus_title: 热点标题
+    :param use_cache:
+    :return:
+    """
+    focus_info = {}
+
+    # parse description, read_cnt, discus_cnt, member_cnt
+    url = 'https://m.s.weibo.com/topic/detail?q=' + urllib.parse.quote(focus_title)
+    res = Cache().cache(url, requests.get, url) if use_cache else requests.get(url)
+    assert res.status_code == 200, \
+        'get focus: {} html fail, status code: {}, text: {}'.format(focus_title, res.status_code, res.text)
+    soup = BeautifulSoup(res.text, 'html5lib')
+    description_tags = soup.find('div', {'class': 'g-list-a title detail'}).find_all('dl')
+    focus_info['description'] = description_tags[-1].text.strip().replace(' ', '') if description_tags else ''
+    read_cnt, discuss_cnt, member_cnt = [t.text for t in
+                                         soup.find('div', {'class': 'g-list-a data'}).find('ul').find_all('span')]
+    focus_info['read_cnt'], focus_info['discuss_cnt'], focus_info['member_cnt'] = \
+        parse_number(read_cnt), parse_number(discuss_cnt), parse_number(member_cnt)
+
+    # parse today read
+    url = 'https://m.s.weibo.com/ajax_topic/trend?q={}&time=24h&type=read'.format(urllib.parse.quote(focus_title))
+    res = Cache().cache(url, requests.get, url) if use_cache else requests.get(url)
+    assert res.status_code == 200, \
+        'get focus: {} 24h read fail, status code: {}, text: {}'.format(focus_title, res.status_code, res.text)
+    today_read = 0
+    today_start = False
+    for time_point in json.loads(res.text)['data']['read']:
+        if time_point['time'] == '00:00':
+            today_start = True
+        if today_start:
+            today_read += time_point['value']
+
+    # parse two days ago read
+    url = 'https://m.s.weibo.com/ajax_topic/trend?q={}&time=7d&type=read'.format(urllib.parse.quote(focus_title))
+    res = Cache().cache(url, requests.get, url) if use_cache else requests.get(url)
+    assert res.status_code == 200, \
+        'get focus: {} 7d read fail, status code: {}, text: {}'.format(focus_title, res.status_code, res.text)
+    before_yesterday_read, yesterday_read = [time_point['value']
+                                             for time_point in json.loads(res.text)['data']['read'][-2:]]
+
+    focus_info['recent_read'] = 3 * today_read + 2 * yesterday_read + 1 * before_yesterday_read
+
+    return focus_info
