@@ -8,12 +8,25 @@ class RankProcessor(ProcessorBase):
         if 'posts' in tmp_result:
             posts = tmp_result['posts']
             for music_type, each_posts in posts.items():
-                each_sorted_posts = [post for _, post in
-                                     sorted(zip(scores[music_type], each_posts), key=lambda t: t[0], reverse=True)]
-                posts[music_type] = each_sorted_posts
+                posts[music_type], scores[music_type] = self._rank(each_posts, scores[music_type])
         elif 'focuses' in tmp_result:
             focuses = tmp_result['focuses']
             for music_type, each_focuses in focuses.items():
-                each_sorted_focuses = [focus for _, focus in
-                                       sorted(zip(scores[music_type], each_focuses), key=lambda t: t[0], reverse=True)]
-                focuses[music_type] = each_sorted_focuses
+                focuses[music_type], scores[music_type] = self._rank(focuses, scores[music_type])
+
+    @staticmethod
+    def _rank(items, scores):
+        """
+        根据scores, 对items进行排序
+
+        :param items: posts or focuses
+        :type items: list
+        :param scores:
+        :type scores: list
+        :return:
+        """
+        new_scores, new_items = [], []
+        for score, item in sorted(zip(scores, items), key=lambda t: t[0], reverse=True):
+            new_items.append(item)
+            new_scores.append(score)
+        return new_items, new_scores

@@ -29,6 +29,7 @@ class Test(unittest.TestCase):
         p = RankProcessor()
         p.run({}, tmp_result, {})
         print(tmp_result['posts'])
+        print(tmp_result['scores'])
 
     def test_rank_focuses(self):
         print('test_rank_focuses~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
@@ -42,6 +43,7 @@ class Test(unittest.TestCase):
         p = RankProcessor()
         p.run({}, tmp_result, {})
         print(tmp_result['focuses'])
+        print(tmp_result['scores'])
 
     def tearDown(self):
         pass
