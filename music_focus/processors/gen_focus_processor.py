@@ -9,9 +9,9 @@ from music_focus.processors.processor_base import ProcessorBase
 class GenFocusProcessor(ProcessorBase):
 
     def run(self, workflow_input, tmp_result, workflow_output):
-        new_focuses = {}
+        focuses = {}
         for music_type, users in users_config.items():
-            new_focuses[music_type] = []
+            focuses[music_type] = []
             for user_id, _ in users:
                 retry_time = 0
                 while retry_time <= 3:
@@ -20,8 +20,8 @@ class GenFocusProcessor(ProcessorBase):
                     try:
                         use_cache = False if retry_time else True
                         user = weibo_api.get_user_info(user_id, use_cache)
-                        focuses = weibo_api.get_focuses_by_user(user, use_cache)
-                        new_focuses[music_type].extend(focuses)
+                        user_focuses = weibo_api.get_focuses_by_user(user, use_cache)
+                        focuses[music_type].extend(user_focuses)
                         logger.info('fetch user: {} data success'.format(user_id))
                         break
                     except Exception as e:
@@ -29,5 +29,5 @@ class GenFocusProcessor(ProcessorBase):
                         retry_time += 1
                 time.sleep(1)
             # distinct focuses
-            new_focuses[music_type] = list({focus.title: focus for focus in new_focuses[music_type]}.values())
-        tmp_result['focuses'] = new_focuses
+            focuses[music_type] = list({focus.title: focus for focus in focuses[music_type]}.values())
+        tmp_result['focuses'] = focuses

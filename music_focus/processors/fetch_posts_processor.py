@@ -14,9 +14,9 @@ class FetchPostsProcessor(ProcessorBase):
         self._before_data = before_day
 
     def run(self, workflow_input, tmp_result, workflow_output):
-        new_posts = {}
+        posts = {}
         for music_type, users in users_config.items():
-            new_posts[music_type] = []
+            posts[music_type] = []
             for user_id, _ in users:
                 retry_time = 0
                 while retry_time <= 3:
@@ -25,13 +25,13 @@ class FetchPostsProcessor(ProcessorBase):
                     try:
                         use_cache = False if retry_time else True
                         user = weibo_api.get_user_info(user_id, use_cache)
-                        posts = [post for post in weibo_api.get_posts_by_user(user, use_cache) if
-                                 post.time > datetime.now() - timedelta(days=self._before_data)]
-                        new_posts[music_type].extend(posts)
+                        user_posts = [post for post in weibo_api.get_posts_by_user(user, use_cache) if
+                                      post.time > datetime.now() - timedelta(days=self._before_data)]
+                        posts[music_type].extend(user_posts)
                         logger.info('fetch user: {} data success'.format(user_id))
                         break
                     except Exception as e:
                         logger.exception('fetch user: {} data error! {}'.format(user_id, e))
                         retry_time += 1
                 time.sleep(1)
-        tmp_result['posts'] = new_posts
+        tmp_result['posts'] = posts
