@@ -10,6 +10,8 @@ class GenFocusProcessor(ProcessorBase):
 
     def run(self, workflow_input, tmp_result, workflow_output):
         focuses = {}
+
+        # get focuses from weibo api
         for music_type, users in users_config.items():
             focuses[music_type] = []
             for user_id, _ in users:
@@ -30,4 +32,11 @@ class GenFocusProcessor(ProcessorBase):
                 time.sleep(1)
             # distinct focuses
             focuses[music_type] = list({focus.title: focus for focus in focuses[music_type]}.values())
+
+        # score
+        scores = {
+            music_type: [f.recent_read for f in each_focuses] for music_type, each_focuses in focuses.items()
+        }
+
         tmp_result['focuses'] = focuses
+        tmp_result['scores'] = scores

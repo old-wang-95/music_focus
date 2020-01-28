@@ -13,6 +13,7 @@ class Test(unittest.TestCase):
         tmp_result = {}
         p.run({}, tmp_result, {})
         print(tmp_result['focuses'])
+        print(tmp_result['scores'])
 
     def tearDown(self):
         pass
