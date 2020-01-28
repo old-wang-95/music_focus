@@ -33,5 +33,6 @@ class FetchPostsProcessor(ProcessorBase):
                     except Exception as e:
                         logger.exception('fetch user: {} data error! {}'.format(user_id, e))
                         retry_time += 1
+                        time.sleep(1)
                 time.sleep(1)
         tmp_result['posts'] = posts

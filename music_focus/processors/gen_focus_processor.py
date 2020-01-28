@@ -30,6 +30,7 @@ class GenFocusProcessor(ProcessorBase):
                     except Exception as e:
                         logger.exception('fetch user: {} data error! {}'.format(user_id, e))
                         retry_time += 1
+                        time.sleep(1)
                 time.sleep(1)
             # distinct, black_list, merge related_users
             black_list = blacklist_config['all'] + blacklist_config[music_type]
