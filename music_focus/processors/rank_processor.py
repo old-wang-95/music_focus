@@ -4,15 +4,10 @@ from music_focus.processors.processor_base import ProcessorBase
 class RankProcessor(ProcessorBase):
 
     def run(self, workflow_input, tmp_result, workflow_output):
+        rtype = workflow_input['result_type']
         scores = tmp_result['scores']
-        if 'posts' in tmp_result:
-            posts = tmp_result['posts']
-            for music_type, each_posts in posts.items():
-                posts[music_type], scores[music_type] = self._rank(each_posts, scores[music_type])
-        elif 'focuses' in tmp_result:
-            focuses = tmp_result['focuses']
-            for music_type, each_focuses in focuses.items():
-                focuses[music_type], scores[music_type] = self._rank(focuses, scores[music_type])
+        for music_type, each_posts in tmp_result[rtype].items():
+            tmp_result[rtype][music_type], scores[music_type] = self._rank(each_posts, scores[music_type])
 
     @staticmethod
     def _rank(items, scores):

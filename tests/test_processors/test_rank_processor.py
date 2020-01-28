@@ -25,9 +25,10 @@ class Test(unittest.TestCase):
         scores = {
             'rock': [7000, 348680]
         }
+        workflow_input = {'result_type': 'posts'}
         tmp_result = {'posts': posts, 'scores': scores}
         p = RankProcessor()
-        p.run({}, tmp_result, {})
+        p.run(workflow_input, tmp_result, {})
         print(tmp_result['posts'])
         print(tmp_result['scores'])
 
@@ -39,9 +40,10 @@ class Test(unittest.TestCase):
         scores = {
             'rock': [500, 1000, 100]
         }
+        workflow_input = {'result_type': 'focuses'}
         tmp_result = {'focuses': focuses, 'scores': scores}
         p = RankProcessor()
-        p.run({}, tmp_result, {})
+        p.run(workflow_input, tmp_result, {})
         print(tmp_result['focuses'])
         print(tmp_result['scores'])
 
