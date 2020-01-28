@@ -31,11 +31,20 @@ class GenFocusProcessor(ProcessorBase):
                         logger.exception('fetch user: {} data error! {}'.format(user_id, e))
                         retry_time += 1
                 time.sleep(1)
-            # distinct focuses
+            # distinct, black_list, merge related_users
             black_list = blacklist_config['all'] + blacklist_config[music_type]
-            focuses[music_type] = list(
-                {focus.title: focus for focus in focuses[music_type] if focus.title not in black_list}.values()
-            )
+            tmp_dict = {}
+            for focus in focuses[music_type]:
+                if focus.title in black_list:
+                    continue
+                if focus.title not in tmp_dict:
+                    tmp_dict[focus.title] = focus
+                else:
+                    tmp_dict[focus.title].related_users.extend(focus.related_users)
+                # distinct related_users
+                tmp_dict[focus.title].related_users = list(set(tmp_dict[focus.title].related_users))
+
+            focuses[music_type] = list(tmp_dict.values())
 
         # score
         scores = {

@@ -120,7 +120,8 @@ def get_focuses_by_user(user, use_cache=True):
                     discuss_cnt=focus_info['discuss_cnt'],
                     member_cnt=focus_info['member_cnt'],
                     link='https://m.weibo.cn/search?containerid=' +
-                         urllib.parse.quote('231522type=1&t=10&q=' + focus_title)
+                         urllib.parse.quote('231522type=1&t=10&q=' + focus_title),
+                    related_users=[user.name]
                 )
                 focuses.append(focus)
     return focuses
