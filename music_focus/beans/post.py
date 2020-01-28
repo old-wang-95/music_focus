@@ -15,4 +15,5 @@ class Post:
     share_cnt: int
     comment_cnt: int
     like_cnt: int
+    link: str
     comments: List[Comment]

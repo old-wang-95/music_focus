@@ -1,6 +1,6 @@
+import json
 import unittest
 from datetime import datetime
-import json
 
 from music_focus.beans.post import Post
 from music_focus.processors.transform_posts_result_processor import TransformPostsResultProcessor
@@ -19,9 +19,9 @@ class Test(unittest.TestCase):
                 'posts': {
                     'rock': [
                         Post(id=1, user_id=1, user_name='痛仰乐队', time=datetime(2020, 1, 24, 0, 0), content='',
-                             share_cnt=1, comment_cnt=1, like_cnt=1, comments=[]),
+                             share_cnt=1, comment_cnt=1, like_cnt=1, link='', comments=[]),
                         Post(id=2, user_id=2, user_name='老王乐队', time=datetime(2020, 1, 25, 0, 0), content='',
-                             share_cnt=2, comment_cnt=2, like_cnt=2, comments=[])
+                             share_cnt=2, comment_cnt=2, like_cnt=2, link='', comments=[])
                     ]
                 }
             }

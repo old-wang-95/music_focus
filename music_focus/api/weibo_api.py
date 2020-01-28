@@ -81,6 +81,7 @@ def get_posts_by_user(user, use_cache=True):
             share_cnt=card['mblog']['reposts_count'],
             comment_cnt=card['mblog']['comments_count'],
             like_cnt=card['mblog']['attitudes_count'],
+            link='https://m.weibo.cn/detail/{}'.format(card['mblog']['id']),
             comments=[]
         )
         posts.append(post)

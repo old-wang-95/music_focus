@@ -16,10 +16,10 @@ class Test(unittest.TestCase):
             'rock': [
                 Post(id=4464282798056885, user_id=1254762805, user_name='痛仰乐队',
                      time=datetime(2020, 1, 24, 0, 0), content='一方有难，八方支援。',
-                     share_cnt=100, comment_cnt=200, like_cnt=5000, comments=[]),
+                     share_cnt=100, comment_cnt=200, like_cnt=5000, link='', comments=[]),
                 Post(id=1111111111111111, user_id=2222222222, user_name='老王乐队',
                      time=datetime(2020, 1, 25, 0, 0), content='没啥好说的',
-                     share_cnt=19353, comment_cnt=7713, like_cnt=116585, comments=[])
+                     share_cnt=19353, comment_cnt=7713, like_cnt=116585, link='', comments=[])
             ]
         }
         scores = {
