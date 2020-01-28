@@ -9,7 +9,7 @@ class Test(unittest.TestCase):
         pass
 
     def test(self):
-        workflow_input = {}
+        workflow_input = {'result_type': 'posts'}
         wf = WeiboOffline()
         r = wf.run(workflow_input)
         print(r)

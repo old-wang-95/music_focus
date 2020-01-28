@@ -26,8 +26,9 @@ class Test(unittest.TestCase):
             'rock': [7000, 348680]
         }
         tmp_result = {'posts': posts, 'scores': scores}
+        workflow_input = {'result_type': 'posts'}
         p = SaveResultProcessor(self.data_dir)
-        p.run({}, tmp_result, {})
+        p.run(workflow_input, tmp_result, {})
 
     def test_save_focuses(self):
         print('test_save_focuses~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
@@ -38,8 +39,9 @@ class Test(unittest.TestCase):
             'rock': [500, 1000, 100]
         }
         tmp_result = {'focuses': focuses, 'scores': scores}
+        workflow_input = {'result_type': 'focuses'}
         p = SaveResultProcessor(self.data_dir)
-        p.run({}, tmp_result, {})
+        p.run(workflow_input, tmp_result, {})
 
     def tearDown(self):
         pass
