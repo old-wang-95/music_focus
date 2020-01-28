@@ -2,6 +2,7 @@ import time
 
 from music_focus import logger
 from music_focus.api import weibo_api
+from music_focus.conf.focus_blacklist import config as blacklist_config
 from music_focus.conf.users import config as users_config
 from music_focus.processors.processor_base import ProcessorBase
 
@@ -31,7 +32,10 @@ class GenFocusProcessor(ProcessorBase):
                         retry_time += 1
                 time.sleep(1)
             # distinct focuses
-            focuses[music_type] = list({focus.title: focus for focus in focuses[music_type]}.values())
+            black_list = blacklist_config['all'] + blacklist_config[music_type]
+            focuses[music_type] = list(
+                {focus.title: focus for focus in focuses[music_type] if focus.title not in black_list}.values()
+            )
 
         # score
         scores = {
