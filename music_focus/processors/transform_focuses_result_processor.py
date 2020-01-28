@@ -17,6 +17,7 @@ class TransformFocusesResultProcessor(ProcessorBase):
                     'discuss_cnt': each_focus.discuss_cnt,
                     'member_cnt': each_focus.member_cnt,
                     'link': each_focus.link,
+                    'related_users': each_focus.related_users,
                     'score': focuses_result['scores'][music_type][idx]
                 })
         workflow_output['result'] = json_result
