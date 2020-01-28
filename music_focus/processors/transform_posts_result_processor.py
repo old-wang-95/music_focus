@@ -18,6 +18,6 @@ class TransformPostsResultProcessor(ProcessorBase):
                     'share_cnt': each_post.share_cnt,
                     'comment_cnt': each_post.comment_cnt,
                     'like_cnt': each_post.like_cnt,
-                    'scores': posts_result['scores'][music_type][idx]
+                    'score': posts_result['scores'][music_type][idx]
                 })
         workflow_output['result'] = json_result
