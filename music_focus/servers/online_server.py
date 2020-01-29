@@ -43,8 +43,8 @@ class OnlineServer(ServerBase):
 
     def start(self):
         app = tornado.web.Application([
-            ('/v1/posts', Handler, {'workflow': WeiboOnline(), 'workflow_input': {'result_type': 'posts'}}),
-            ('/v1/focuses', Handler, {'workflow': FocusOnline(), 'workflow_input': {'result_type': 'focuses'}})
+            ('/api/v1/posts', Handler, {'workflow': WeiboOnline(), 'workflow_input': {'result_type': 'posts'}}),
+            ('/api/v1/focuses', Handler, {'workflow': FocusOnline(), 'workflow_input': {'result_type': 'focuses'}})
         ])
         server = tornado.httpserver.HTTPServer(app)
         server.bind(self._port, address=self._address)
