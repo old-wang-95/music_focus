@@ -1,0 +1,22 @@
+version: '3'
+services:
+  music_focus_online:
+    environment:
+      TZ: Asia/Shanghai
+      ROLE: online
+    ports:
+      - 8000:8000
+    image: music_focus:latest
+    volumes:
+      - ./data:/music_focus/data
+      - ./log:/music_focus/log
+      - ./tmp:/music_focus/tmp
+  music_focus_offline:
+    environment:
+      TZ: Asia/Shanghai
+      ROLE: offline
+    image: music_focus:latest
+    volumes:
+      - ./data:/music_focus/data
+      - ./log:/music_focus/log
+      - ./tmp:/music_focus/tmp
