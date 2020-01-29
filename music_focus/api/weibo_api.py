@@ -1,4 +1,5 @@
 import json
+import time
 import urllib.parse
 
 import requests
@@ -125,6 +126,7 @@ def get_focuses_by_user(user, use_cache=True):
                     related_users=[user.name]
                 )
                 focuses.append(focus)
+                time.sleep(1)
     return focuses
 
 
