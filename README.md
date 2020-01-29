@@ -27,7 +27,7 @@
 ## 4. 接口
 ### 4.1 获取微博
 #### 接口
-`/api/v1/posts`
+`GET` `/api/v1/posts`
 
 #### 返回样例
 ```json
@@ -66,7 +66,7 @@
 
 ### 4.2 获取热点
 #### 接口
-`/api/v1/focuses`
+`GET` `/api/v1/focuses`
 
 #### 返回样例
 ```json
