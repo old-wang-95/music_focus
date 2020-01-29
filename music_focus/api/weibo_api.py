@@ -153,6 +153,7 @@ def _parse_focus_by_title(focus_title, use_cache=True):
                                          soup.find('div', {'class': 'g-list-a data'}).find('ul').find_all('span')]
     focus_info['read_cnt'], focus_info['discuss_cnt'], focus_info['member_cnt'] = \
         parse_number(read_cnt), parse_number(discuss_cnt), parse_number(member_cnt)
+    time.sleep(1)
 
     # parse today read
     url = 'https://m.s.weibo.com/ajax_topic/trend?q={}&time=24h&type=read'.format(urllib.parse.quote(focus_title))
@@ -166,6 +167,7 @@ def _parse_focus_by_title(focus_title, use_cache=True):
             today_start = True
         if today_start:
             today_read += time_point['value']
+    time.sleep(1)
 
     # parse two days ago read
     url = 'https://m.s.weibo.com/ajax_topic/trend?q={}&time=7d&type=read'.format(urllib.parse.quote(focus_title))
