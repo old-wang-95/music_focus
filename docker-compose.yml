@@ -9,7 +9,7 @@ services:
     image: music_focus:latest
     volumes:
       - ./data:/music_focus/data
-      - ./log:/music_focus/log
+      - ./log/online:/music_focus/log
       - ./tmp:/music_focus/tmp
   music_focus_offline:
     environment:
@@ -18,5 +18,5 @@ services:
     image: music_focus:latest
     volumes:
       - ./data:/music_focus/data
-      - ./log:/music_focus/log
+      - ./log/offline:/music_focus/log
       - ./tmp:/music_focus/tmp
