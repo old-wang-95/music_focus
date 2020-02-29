@@ -30,20 +30,22 @@ class FetchPostsProcessor(ProcessorBase):
                         # 获取当前用户信息及其微博信息
                         user = weibo_api.get_user_info(user_id, use_cache)
                         user_posts = weibo_api.get_posts_by_user(user, use_cache)
-                        # 对微博进行截图
+                        # 过滤旧微博, 并截图
+                        new_user_posts = []  # 用户的新微博
                         for i, post_element in enumerate(
                                 chrome_api.find_elements_in_page(USER_POSTS_URL_FORMATTER.format(user.id),
                                                                  POSTS_CSS_SELECTOR)):
+                            user_post = user_posts[i]
+                            if user_post.time <= datetime.now() - timedelta(days=self._before_data):  # 过滤旧微博
+                                continue
                             images_dir = 'data/images'
                             if not os.path.exists(images_dir):
                                 os.mkdir(images_dir)
-                            image_path = '{}/{}.png'.format(images_dir, user_posts[i].id)
-                            user_posts[i].image_path = image_path
+                            image_path = '{}/{}.png'.format(images_dir, user_post.id)
+                            user_post.image_path = image_path
                             chrome_api.screenshot(post_element, image_path)
-                        # 过滤最近的几条微博
-                        user_posts = [post for post in user_posts if
-                                      post.time > datetime.now() - timedelta(days=self._before_data)]
-                        posts[music_type].extend(user_posts)
+                            new_user_posts.append(user_post)
+                        posts[music_type].extend(new_user_posts)
                         logger.info('fetch user: {} data success'.format(user_id))
                         break
                     except Exception as e:
