@@ -17,3 +17,4 @@ class Post:
     like_cnt: int
     link: str
     comments: List[Comment]
+    image_path: str = ''
