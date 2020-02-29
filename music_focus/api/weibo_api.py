@@ -12,6 +12,9 @@ from music_focus.utils import dt_utils
 from music_focus.utils.cache import Cache
 from music_focus.utils.number_utils import parse_number
 
+USER_POSTS_URL_FORMATTER = 'https://m.weibo.cn/u/{}'
+POSTS_CSS_SELECTOR = '.card.m-panel.card9.weibo-member'
+
 
 def get_user_info(user_id, use_cache=True):
     """
