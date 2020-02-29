@@ -10,7 +10,7 @@ class MyTestCase(unittest.TestCase):
         url = USER_POSTS_URL_FORMATTER.format(1757519727)
         selector = POSTS_CSS_SELECTOR
         for i, element in enumerate(chrome_api.find_elements_in_page(url, selector)):
-            chrome_api.screenshot(element, 'post-{}.png'.format(i), 'tests/data')
+            chrome_api.screenshot(element, 'tests/data/post-{}.png'.format(i))
 
 
 if __name__ == '__main__':

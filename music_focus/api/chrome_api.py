@@ -27,5 +27,5 @@ def find_elements_in_page(url, css_selector, wait_time=5):
     driver.quit()
 
 
-def screenshot(element, filename, dirname='.'):
-    element.screenshot('{}/{}'.format(dirname, filename))
+def screenshot(element, image_path):
+    element.screenshot(image_path)
