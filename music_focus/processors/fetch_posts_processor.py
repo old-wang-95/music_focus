@@ -1,9 +1,12 @@
+import os
 import time
 from datetime import datetime
 from datetime import timedelta
 
 from music_focus import logger
+from music_focus.api import chrome_api
 from music_focus.api import weibo_api
+from music_focus.api.weibo_api import USER_POSTS_URL_FORMATTER, POSTS_CSS_SELECTOR
 from music_focus.conf.users import config as users_config
 from music_focus.processors.processor_base import ProcessorBase
 
@@ -24,8 +27,21 @@ class FetchPostsProcessor(ProcessorBase):
                         logger.info('start to retry, current retry time is: {}'.format(retry_time))
                     try:
                         use_cache = False if retry_time else True
+                        # 获取当前用户信息及其微博信息
                         user = weibo_api.get_user_info(user_id, use_cache)
-                        user_posts = [post for post in weibo_api.get_posts_by_user(user, use_cache) if
+                        user_posts = weibo_api.get_posts_by_user(user, use_cache)
+                        # 对微博进行截图
+                        for i, post_element in enumerate(
+                                chrome_api.find_elements_in_page(USER_POSTS_URL_FORMATTER.format(user.id),
+                                                                 POSTS_CSS_SELECTOR)):
+                            images_dir = 'data/images'
+                            if not os.path.exists(images_dir):
+                                os.mkdir(images_dir)
+                            image_path = '{}/{}.png'.format(images_dir, user_posts[i].id)
+                            user_posts[i].image_path = image_path
+                            chrome_api.screenshot(post_element, image_path)
+                        # 过滤最近的几条微博
+                        user_posts = [post for post in user_posts if
                                       post.time > datetime.now() - timedelta(days=self._before_data)]
                         posts[music_type].extend(user_posts)
                         logger.info('fetch user: {} data success'.format(user_id))
