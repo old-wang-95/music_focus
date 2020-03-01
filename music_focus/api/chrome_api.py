@@ -8,6 +8,7 @@ def find_elements_in_page(url, css_selector, wait_time=5):
     options.add_argument('--headless')
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
+    options.add_argument("--lang=zh-CN")
     options.headless = True
     profile = webdriver.FirefoxProfile()
     profile.set_preference("intl.accept_languages", "zh-CN")
