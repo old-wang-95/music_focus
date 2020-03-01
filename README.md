@@ -44,7 +44,8 @@
         "comment_cnt": 1,
         "like_cnt": 1,
         "link": "",
-        "score": 7000
+        "score": 7000,
+        "image_path": "1.png"
       },
       {
         "id": 2,
@@ -56,7 +57,8 @@
         "comment_cnt": 2,
         "like_cnt": 2,
         "link": "",
-        "score": 348680
+        "score": 348680,
+        "image_path": "2.png"
       }
     ]
   },
