@@ -1,5 +1,7 @@
-FROM joyzoursky/python-chromedriver:3.7-alpine3.8
+FROM docker.io/atmaniak/firefox-python3
 MAINTAINER wang0624@foxmail.com
+
+RUN ln -s /usr/bin/python3 /usr/bin/python && ln -s /usr/bin/pip3 /usr/bin/pip
 
 COPY ./requirements.txt /requirements.txt
 RUN pip install -r /requirements.txt -i https://pypi.doubanio.com/simple/
