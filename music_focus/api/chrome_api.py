@@ -9,7 +9,9 @@ def find_elements_in_page(url, css_selector, wait_time=5):
     options.add_argument('--no-sandbox')
     options.add_argument('--disable-dev-shm-usage')
     options.headless = True
-    driver = webdriver.Firefox(options=options)
+    profile = webdriver.FirefoxProfile()
+    profile.set_preference("intl.accept_languages", "cn")
+    driver = webdriver.Firefox(firefox_profile=profile, options=options)
 
     driver.get(url)
     time.sleep(wait_time)
