@@ -4,7 +4,7 @@ from datetime import datetime
 from datetime import timedelta
 
 from music_focus import logger
-from music_focus.api import chrome_api
+from music_focus.api import firefox_api
 from music_focus.api import weibo_api
 from music_focus.api.weibo_api import USER_POSTS_URL_FORMATTER, POSTS_CSS_SELECTOR
 from music_focus.conf.users import config as users_config
@@ -33,8 +33,8 @@ class FetchPostsProcessor(ProcessorBase):
                         # 过滤旧微博, 并截图
                         new_user_posts = []  # 用户的新微博
                         for i, post_element in enumerate(
-                                chrome_api.find_elements_in_page(USER_POSTS_URL_FORMATTER.format(user.id),
-                                                                 POSTS_CSS_SELECTOR)):
+                                firefox_api.find_elements_in_page(USER_POSTS_URL_FORMATTER.format(user.id),
+                                                                  POSTS_CSS_SELECTOR)):
                             user_post = user_posts[i]
                             if user_post.time <= datetime.now() - timedelta(days=self._before_data):  # 过滤旧微博
                                 continue
@@ -43,7 +43,7 @@ class FetchPostsProcessor(ProcessorBase):
                                 os.mkdir(images_dir)
                             image_path = '{}/{}.png'.format(images_dir, user_post.id)
                             user_post.image_path = '{}.png'.format(user_post.id)
-                            chrome_api.screenshot(post_element, image_path)
+                            firefox_api.screenshot(post_element, image_path)
                             new_user_posts.append(user_post)
                         posts[music_type].extend(new_user_posts)
                         logger.info('fetch user: {} data success'.format(user_id))
