@@ -38,11 +38,11 @@ class FetchPostsProcessor(ProcessorBase):
                             user_post = user_posts[i]
                             if user_post.time <= datetime.now() - timedelta(days=self._before_data):  # 过滤旧微博
                                 continue
-                            images_dir = 'data/images'
+                            images_dir = 'data/weibo_images'
                             if not os.path.exists(images_dir):
                                 os.mkdir(images_dir)
                             image_path = '{}/{}.png'.format(images_dir, user_post.id)
-                            user_post.image_path = image_path
+                            user_post.image_path = '{}.png'.format(user_post.id)
                             chrome_api.screenshot(post_element, image_path)
                             new_user_posts.append(user_post)
                         posts[music_type].extend(new_user_posts)
