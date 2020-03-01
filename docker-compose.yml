@@ -20,3 +20,4 @@ services:
       - ./data:/music_focus/data
       - ./log/offline:/music_focus/log
       - ./tmp:/music_focus/tmp
+    shm_size: '2gb'
