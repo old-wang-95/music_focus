@@ -1,4 +1,4 @@
-FROM docker.io/cjrice/selenium-python3:latest
+FROM joyzoursky/python-chromedriver:3.7-alpine3.8
 MAINTAINER wang0624@foxmail.com
 
 COPY ./requirements.txt /requirements.txt
