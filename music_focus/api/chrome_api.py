@@ -5,6 +5,9 @@ from selenium import webdriver
 
 def find_elements_in_page(url, css_selector, wait_time=5):
     options = webdriver.ChromeOptions()
+    options.add_argument('--headless')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
     options.headless = True
     driver = webdriver.Chrome(options=options)
 
