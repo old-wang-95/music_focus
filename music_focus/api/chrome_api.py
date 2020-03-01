@@ -10,7 +10,7 @@ def find_elements_in_page(url, css_selector, wait_time=5):
     options.add_argument('--disable-dev-shm-usage')
     options.headless = True
     profile = webdriver.FirefoxProfile()
-    profile.set_preference("intl.accept_languages", "cn")
+    profile.set_preference("intl.accept_languages", "zh-CN")
     driver = webdriver.Firefox(firefox_profile=profile, options=options)
 
     driver.get(url)
