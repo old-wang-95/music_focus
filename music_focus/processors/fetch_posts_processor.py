@@ -30,23 +30,21 @@ class FetchPostsProcessor(ProcessorBase):
                         # 获取当前用户信息及其微博信息
                         user = weibo_api.get_user_info(user_id, use_cache)
                         user_posts = weibo_api.get_posts_by_user(user, use_cache)
-                        logger.debug("user_posts: {}".format(user_posts))
                         # 过滤旧微博, 并截图
                         new_user_posts = []  # 用户的新微博
                         for i, post_element in enumerate(
                                 firefox_api.find_elements_in_page(USER_POSTS_URL_FORMATTER.format(user.id),
                                                                   POSTS_CSS_SELECTOR)):
-                            logger.debug("{}, {}".format(i, post_element))
-                            user_post = user_posts[i]
-                            if user_post.time <= datetime.now() - timedelta(days=self._before_data):  # 过滤旧微博
+                            if i >= len(user_posts) or user_posts[i].time <= datetime.now() - timedelta(
+                                    days=self._before_data):  # 过滤旧微博
                                 continue
                             images_dir = 'data/weibo_images'
                             if not os.path.exists(images_dir):
                                 os.mkdir(images_dir)
-                            image_path = '{}/{}.png'.format(images_dir, user_post.id)
-                            user_post.image_path = '{}.png'.format(user_post.id)
+                            image_path = '{}/{}.png'.format(images_dir, user_posts[i].id)
+                            user_posts[i].image_path = '{}.png'.format(user_posts[i].id)
                             firefox_api.screenshot(post_element, image_path)
-                            new_user_posts.append(user_post)
+                            new_user_posts.append(user_posts[i])
                         posts[music_type].extend(new_user_posts)
                         logger.info('fetch user: {} data success'.format(user_id))
                         break
