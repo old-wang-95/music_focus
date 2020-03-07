@@ -30,11 +30,13 @@ class FetchPostsProcessor(ProcessorBase):
                         # 获取当前用户信息及其微博信息
                         user = weibo_api.get_user_info(user_id, use_cache)
                         user_posts = weibo_api.get_posts_by_user(user, use_cache)
+                        logger.debug("user_posts: {}".format(user_posts))
                         # 过滤旧微博, 并截图
                         new_user_posts = []  # 用户的新微博
                         for i, post_element in enumerate(
                                 firefox_api.find_elements_in_page(USER_POSTS_URL_FORMATTER.format(user.id),
                                                                   POSTS_CSS_SELECTOR)):
+                            print(i, post_element)
                             user_post = user_posts[i]
                             if user_post.time <= datetime.now() - timedelta(days=self._before_data):  # 过滤旧微博
                                 continue
