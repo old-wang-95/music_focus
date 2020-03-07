@@ -36,7 +36,7 @@ class FetchPostsProcessor(ProcessorBase):
                         for i, post_element in enumerate(
                                 firefox_api.find_elements_in_page(USER_POSTS_URL_FORMATTER.format(user.id),
                                                                   POSTS_CSS_SELECTOR)):
-                            print(i, post_element)
+                            logger.debug("{}, {}".format(i, post_element))
                             user_post = user_posts[i]
                             if user_post.time <= datetime.now() - timedelta(days=self._before_data):  # 过滤旧微博
                                 continue
