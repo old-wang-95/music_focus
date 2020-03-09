@@ -28,7 +28,7 @@ def find_elements_in_page(url, css_selector, driver=firefox_driver, wait_time=5,
             break
         except InvalidSessionIdException as e:
             driver.quit()
-            del driver
+            del driver, firefox_driver
             gc.collect()
             driver = get_driver()
             retry_time -= 1
@@ -39,7 +39,6 @@ def find_elements_in_page(url, css_selector, driver=firefox_driver, wait_time=5,
     )
     for element in driver.find_elements_by_css_selector(css_selector):
         yield element
-    driver.close()
 
 
 def screenshot(element, image_path):
