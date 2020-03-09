@@ -1,3 +1,4 @@
+import gc
 import time
 
 from selenium import webdriver
@@ -26,7 +27,9 @@ def find_elements_in_page(url, css_selector, driver=firefox_driver, wait_time=5,
             driver.get(url)
             break
         except InvalidSessionIdException as e:
+            driver.quit()
             del driver
+            gc.collect()
             driver = get_driver()
             retry_time -= 1
     time.sleep(wait_time)
