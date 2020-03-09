@@ -2,7 +2,6 @@ import gc
 import time
 
 from selenium import webdriver
-from selenium.common.exceptions import InvalidSessionIdException
 
 
 def get_driver():
@@ -18,19 +17,9 @@ def get_driver():
     return driver
 
 
-firefox_driver = get_driver()
-
-
-def find_elements_in_page(url, css_selector, driver=firefox_driver, wait_time=5, retry_time=3):
-    while retry_time:
-        try:
-            driver.get(url)
-            break
-        except InvalidSessionIdException as e:
-            del driver, firefox_driver
-            gc.collect()
-            driver = get_driver()
-            retry_time -= 1
+def find_elements_in_page(url, css_selector, wait_time=5):
+    driver = get_driver()
+    driver.get(url)
     time.sleep(wait_time)
     driver.set_window_size(
         driver.execute_script('return document.body.parentNode.scrollWidth'),
@@ -38,7 +27,8 @@ def find_elements_in_page(url, css_selector, driver=firefox_driver, wait_time=5,
     )
     for element in driver.find_elements_by_css_selector(css_selector):
         yield element
-    driver.quit()
+    del driver
+    gc.collect()
 
 
 def screenshot(element, image_path):
