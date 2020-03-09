@@ -1,5 +1,6 @@
 import gc
 import time
+import psutil
 
 from selenium import webdriver
 
@@ -29,6 +30,9 @@ def find_elements_in_page(url, css_selector, wait_time=5):
         yield element
     del driver
     gc.collect()
+    for p in psutil.process_iter():
+        if 'firefox' in p.name():
+            p.kill()
 
 
 def screenshot(element, image_path):
