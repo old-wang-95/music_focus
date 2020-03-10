@@ -31,7 +31,7 @@ def find_elements_in_page(url, css_selector, wait_time=5):
     del driver
     gc.collect()
     for p in psutil.process_iter():
-        if 'firefox' in p.name():
+        if 'firefox' in p.name() or 'dbus-daemon' in p.name():
             p.kill()
 
 
