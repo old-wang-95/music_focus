@@ -7,7 +7,7 @@ def parse_date_time(time_str):
     now = datetime.now()
 
     if time_str.endswith('前'):
-        groups = re.compile('([\d]+)(小时|分钟|秒)前').findall(time_str)
+        groups = re.compile('([\\d]+)(小时|分钟|秒)前').findall(time_str)
         if len(groups) != 1:
             raise ValueError('must find one group, illegal time str: {}'.format(time_str))
         num, ttype = groups[0]
