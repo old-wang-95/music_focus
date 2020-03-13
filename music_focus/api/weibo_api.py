@@ -1,6 +1,8 @@
 import json
+import re
 import time
 import urllib.parse
+from datetime import datetime
 
 import requests
 from bs4 import BeautifulSoup
@@ -8,6 +10,7 @@ from bs4 import BeautifulSoup
 from music_focus.beans.focus import Focus
 from music_focus.beans.post import Post
 from music_focus.beans.user import User, Gender
+from music_focus.beans.video import Video
 from music_focus.utils import dt_utils
 from music_focus.utils.cache import Cache
 from music_focus.utils.number_utils import parse_number
@@ -183,3 +186,50 @@ def _parse_focus_by_title(focus_title, use_cache=True):
     focus_info['recent_read'] = 3 * today_read + 2 * yesterday_read + 1 * before_yesterday_read
 
     return focus_info
+
+
+def get_videos_by_user(user, use_cache=True):
+    """
+    根据user, 获取相关的视频
+
+    :param user
+    :type user: User
+    :param use_cache
+    :type use_cache: bool
+    """
+    url = 'https://m.weibo.cn/api/container/getIndex?type=uid&value={}&containerid={}'.format(user.id, user.posts)
+    res = Cache().cache(url, requests.get, url) if use_cache else requests.get(url)
+    assert res.status_code == 200, \
+        'get {} posts fail, status code: {}, text: {}'.format(user, res.status_code, res.text)
+
+    videos = []
+    data = json.loads(res.text)
+    for card in data['data']['cards']:
+        if card['card_type'] != 9:
+            continue
+
+        page_info = None
+        if card['mblog'].get('page_info', {}).get('type') == 'video':  # 此微博为原创视频
+            page_info = card['mblog']['page_info']
+        if card['mblog'].get('retweeted_status', {}).get('page_info', {}).get('type') == 'video':  # 此微博为转载视频
+            if re.sub('乐队|_|樂團|樂隊|微博', '', user.name) \
+                    not in card['mblog']['retweeted_status']['page_info']['media_info']['next_title']:  # 必须有涉及此用户
+                continue
+            page_info = card['mblog']['retweeted_status']['page_info']
+        if not page_info:
+            continue
+
+        video = Video(
+            id=page_info['media_info']['media_id'],
+            user_id=user.id,
+            user_name=user.name,
+            time=datetime.fromtimestamp(page_info['media_info']['video_publish_time']),
+            text=page_info['media_info']['next_title'],
+            cover_path=page_info['page_pic']['url'],
+            url=page_info['media_info']['stream_url_hd'],
+            view_cnt=page_info['media_info']['online_users_number'],
+            display_view_cnt=page_info['media_info']['online_users']
+        )
+        videos.append(video)
+
+    return videos

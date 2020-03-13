@@ -35,6 +35,14 @@ class Test(unittest.TestCase):
         r = weibo_api.get_focuses_by_user(user)
         print(r)
 
+    def test_get_videos_by_user(self):
+        print('test_get_videos_by_user~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        user = User(id=6724189443, name='新裤子乐队_',
+                    gender=Gender.male, verified=True, description='', followers_cnt=0, follow_cnt=0,
+                    profile=0, posts=1076036724189443, video=0, super_topic=0, album=0)
+        videos = weibo_api.get_videos_by_user(user)
+        print(videos)
+
     def tearDown(self):
         pass
 
