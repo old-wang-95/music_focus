@@ -4,6 +4,7 @@ from datetime import datetime
 
 @dataclass
 class Video:
+    id: str
     user_id: int
     user_name: str
     time: datetime
@@ -11,3 +12,4 @@ class Video:
     cover_path: str
     url: str
     view_cnt: int
+    display_view_cnt: str
