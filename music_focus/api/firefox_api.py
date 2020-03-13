@@ -1,8 +1,10 @@
 import gc
 import time
-import psutil
 
+import psutil
 from selenium import webdriver
+
+from music_focus.utils import os_utils
 
 
 def get_driver():
@@ -33,6 +35,7 @@ def find_elements_in_page(url, css_selector, wait_time=5):
     for p in psutil.process_iter():
         if 'firefox' in p.name() or 'dbus-daemon' in p.name():
             p.kill()
+    os_utils.empty_dir('/tmp')  # 防止/tmp目录过大造成硬盘塞满
 
 
 def screenshot(element, image_path):
