@@ -9,7 +9,7 @@ from music_focus.processors.processor_base import ProcessorBase
 
 class FetchVideosProcessor(ProcessorBase):
 
-    def __init__(self, before_day=3):
+    def __init__(self, before_day=5):
         self._before_data = before_day
 
     def run(self, workflow_input, tmp_result, workflow_output):
