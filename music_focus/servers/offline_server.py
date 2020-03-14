@@ -3,6 +3,7 @@ import time
 from music_focus import logger
 from music_focus.servers.server_base import ServerBase
 from music_focus.workflows.focus_offline import FocusOffline
+from music_focus.workflows.video_offline import VideoOffline
 from music_focus.workflows.weibo_offline import WeiboOffline
 
 
@@ -12,10 +13,12 @@ class OfflineServer(ServerBase):
         self._interval = interval
         self._workflows = [
             WeiboOffline(),
-            FocusOffline()
+            VideoOffline(),
+            FocusOffline(),
         ]
         self._workflow_inputs = [
             {'result_type': 'posts'},
+            {'result_type': 'videos'},
             {'result_type': 'focuses'}
         ]
 

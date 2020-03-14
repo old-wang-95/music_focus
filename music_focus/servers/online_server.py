@@ -8,6 +8,7 @@ import tornado.web
 from music_focus import logger
 from music_focus.servers.server_base import ServerBase
 from music_focus.workflows.focus_online import FocusOnline
+from music_focus.workflows.video_online import VideoOnline
 from music_focus.workflows.weibo_online import WeiboOnline
 
 
@@ -36,7 +37,7 @@ class Handler(tornado.web.RequestHandler):
 
 class OnlineServer(ServerBase):
 
-    def __init__(self, address='0.0.0.0', port=8000, process_num=2):
+    def __init__(self, address='0.0.0.0', port=8000, process_num=3):
         self._address = address
         self._port = port
         self._process_num = process_num
@@ -44,7 +45,8 @@ class OnlineServer(ServerBase):
     def start(self):
         app = tornado.web.Application([
             ('/api/v1/posts', Handler, {'workflow': WeiboOnline(), 'workflow_input': {'result_type': 'posts'}}),
-            ('/api/v1/focuses', Handler, {'workflow': FocusOnline(), 'workflow_input': {'result_type': 'focuses'}})
+            ('/api/v1/focuses', Handler, {'workflow': FocusOnline(), 'workflow_input': {'result_type': 'focuses'}}),
+            ('/api/v1/videos', Handler, {'workflow': VideoOnline(), 'workflow_input': {'result_type': 'videos'}})
         ])
         server = tornado.httpserver.HTTPServer(app)
         server.bind(self._port, address=self._address)
