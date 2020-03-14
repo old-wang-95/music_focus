@@ -1,3 +1,4 @@
+import os
 import time
 from datetime import datetime, timedelta
 
@@ -14,6 +15,8 @@ class FetchVideosProcessor(ProcessorBase):
     def __init__(self, before_day=5):
         self._before_data = before_day
         self._image_dir = 'data/video_covers'
+        if not os.path.exists(self._image_dir):
+            os.makedirs(self._image_dir)
 
     def run(self, workflow_input, tmp_result, workflow_output):
         videos = {}
