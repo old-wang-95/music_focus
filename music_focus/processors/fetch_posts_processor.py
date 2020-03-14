@@ -15,6 +15,9 @@ class FetchPostsProcessor(ProcessorBase):
 
     def __init__(self, before_day=3):
         self._before_data = before_day
+        self._images_dir = 'data/weibo_images'
+        if not os.path.exists(self._images_dir):
+            os.makedirs(self._images_dir)
 
     def run(self, workflow_input, tmp_result, workflow_output):
         posts = {}
@@ -38,10 +41,7 @@ class FetchPostsProcessor(ProcessorBase):
                             if i >= len(user_posts) or user_posts[i].time <= datetime.now() - timedelta(
                                     days=self._before_data):  # 过滤旧微博
                                 continue
-                            images_dir = 'data/weibo_images'
-                            if not os.path.exists(images_dir):
-                                os.mkdir(images_dir)
-                            image_path = '{}/{}.png'.format(images_dir, user_posts[i].id)
+                            image_path = '{}/{}.png'.format(self._images_dir, user_posts[i].id)
                             user_posts[i].image_path = '{}.png'.format(user_posts[i].id)
                             firefox_api.screenshot(post_element, image_path)
                             new_user_posts.append(user_posts[i])
