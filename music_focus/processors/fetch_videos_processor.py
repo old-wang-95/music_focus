@@ -1,6 +1,8 @@
 import time
 from datetime import datetime, timedelta
 
+import requests
+
 from music_focus import logger
 from music_focus.api import weibo_api
 from music_focus.conf.users import config as users_config
@@ -11,6 +13,7 @@ class FetchVideosProcessor(ProcessorBase):
 
     def __init__(self, before_day=5):
         self._before_data = before_day
+        self._image_dir = 'data/video_covers'
 
     def run(self, workflow_input, tmp_result, workflow_output):
         videos = {}
@@ -31,6 +34,9 @@ class FetchVideosProcessor(ProcessorBase):
                         for video in user_videos:
                             if video.id in tmp_set or video.time <= datetime.now() - timedelta(days=self._before_data):
                                 continue
+                            cover_f_name = '{}.jpg'.format(video.id)
+                            _download_img(video.cover_path, '{}/{}'.format(self._image_dir, cover_f_name))
+                            video.cover_path = cover_f_name
                             videos[music_type].append(video)
                             scores[music_type].append(video.view_cnt)
                             tmp_set.add(video.id)
@@ -43,3 +49,11 @@ class FetchVideosProcessor(ProcessorBase):
                 time.sleep(1)
         tmp_result['videos'] = videos
         tmp_result['scores'] = scores
+
+
+def _download_img(remote_path, local_path):
+    res = requests.get(remote_path)
+    assert res.status_code == 200, 'get url: {} error, status_code: {}, text: {}'.format(remote_path, res.status_code,
+                                                                                         res.text)
+    with open(local_path, 'wb') as f:
+        f.write(res.content)
