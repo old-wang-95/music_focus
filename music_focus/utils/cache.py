@@ -41,7 +41,7 @@ class Cache:
             result = pickle.load(f)
         return result['result']
 
-    def cache(self, key, func, *func_args, timeout=60 * 30, **func_kwargs):
+    def cache(self, key, func, *func_args, timeout=60 * 60, **func_kwargs):
         if self._exist_cache(key):
             return self._get_cache(key)
         value = func(*func_args, **func_kwargs)
