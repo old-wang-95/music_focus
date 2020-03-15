@@ -11,6 +11,7 @@ services:
       - ./data:/music_focus/data
       - ./log/online:/music_focus/log
       - ./tmp:/music_focus/tmp
+      - ./music_focus/conf:/music_focus/music_focus/conf
     restart: always
   music_focus_offline:
     environment:
