@@ -215,8 +215,8 @@ def get_videos_by_user(user, use_cache=True):
         if card['mblog'].get('page_info', {}).get('type') == 'video':  # 此微博为原创视频
             page_info = card['mblog']['page_info']
         if card['mblog'].get('retweeted_status', {}).get('page_info', {}).get('type') == 'video':  # 此微博为转载视频
-            if re.sub('乐队|_|樂團|樂隊|微博', '', user.name) \
-                    not in card['mblog']['retweeted_status']['page_info']['media_info']['next_title']:  # 必须有涉及此用户
+            if not _keep_retweeted_video(user.name, user.nick_name,
+                                         card['mblog']['retweeted_status']['page_info']['media_info']['next_title']):
                 continue
             page_info = card['mblog']['retweeted_status']['page_info']
         if not page_info:
@@ -237,6 +237,21 @@ def get_videos_by_user(user, use_cache=True):
         videos.append(video)
 
     return videos
+
+
+def _keep_retweeted_video(user_name, nick_name, text):
+    """
+    判断是否保留转发里面的视频
+
+    :param text: 转发的文字内容
+    """
+    if re.sub('乐队|_|樂團|樂隊|微博', '', user_name) in text:
+        return True
+    if re.sub('乐队|_|樂團|樂隊|微博', '', nick_name) in text:
+        return True
+    if re.search('音乐|民谣|摇滚|歌|唱|吉他|嗓', text):
+        return True
+    return False
 
 
 def get_video_url_by_post(post_id, use_cache=True):
