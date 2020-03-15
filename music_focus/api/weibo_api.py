@@ -39,7 +39,7 @@ def get_user_info(user_id, use_cache=True):
     def _get_tab_type(tab_type):
         for tab in data['data']['tabsInfo']['tabs']:
             if tab['tab_type'] == tab_type:
-                return int(tab['containerid'])
+                return int(tab['containerid']) if tab['containerid'].isdigit() else 0
         return 0
 
     user = User(
