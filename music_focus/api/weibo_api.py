@@ -245,9 +245,10 @@ def _keep_retweeted_video(user_name, nick_name, text):
 
     :param text: 转发的文字内容
     """
-    if re.sub('乐队|_|樂團|樂隊|微博', '', user_name) in text:
+    text = text.lower()
+    if re.sub('乐队|_|樂團|樂隊|微博', '', user_name.lower()) in text:
         return True
-    if re.sub('乐队|_|樂團|樂隊|微博', '', nick_name) in text:
+    if re.sub('乐队|_|樂團|樂隊|微博', '', nick_name.lower()) in text:
         return True
     if re.search('音乐|民谣|摇滚|歌|唱|吉他|嗓', text):
         return True
