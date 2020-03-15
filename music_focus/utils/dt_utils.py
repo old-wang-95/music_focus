@@ -32,5 +32,7 @@ def parse_date_time(time_str):
         hour, minute = time_str.split(' ')[-1].split(':')
         return datetime(year=now.year, month=now.month, day=now.day,
                         hour=int(hour), minute=int(minute)) - timedelta(days=1)
+    elif '刚刚' in time_str:
+        return now
     else:
         raise ValueError('illegal time str: {}'.format(time_str))
