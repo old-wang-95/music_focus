@@ -33,7 +33,7 @@ class FetchVideosProcessor(ProcessorBase):
                     try:
                         use_cache = False if retry_time else True
                         user = weibo_api.get_user_info(user_id, use_cache)
-                        user_videos = weibo_api.get_videos_by_user(user, use_cache)
+                        user_videos = weibo_api.get_videos_by_user(user, use_cache=False)
                         for video in user_videos:
                             if video.id in tmp_set or video.time <= datetime.now() - timedelta(days=self._before_data):
                                 continue
