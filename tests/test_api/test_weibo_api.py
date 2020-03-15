@@ -43,6 +43,11 @@ class Test(unittest.TestCase):
         videos = weibo_api.get_videos_by_user(user)
         print(videos)
 
+    def test_get_video_url_by_post(self):
+        print('test_get_video_url_by_post~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        videos = weibo_api.get_video_url_by_post(4481646033828351)
+        print(videos)
+
     def tearDown(self):
         pass
 

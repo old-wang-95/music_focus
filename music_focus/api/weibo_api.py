@@ -234,3 +234,23 @@ def get_videos_by_user(user, use_cache=True):
         videos.append(video)
 
     return videos
+
+
+def get_video_url_by_post(post_id, use_cache=True):
+    """
+    根据post id获得视频的url
+
+    :param post_id: int
+    :param use_cache: bool
+    """
+    url = 'https://m.weibo.cn/detail/{}'.format(post_id)
+    res = Cache().cache(url, requests.get, url, timeout=30 * 60) if use_cache else requests.get(url)
+    assert res.status_code == 200, \
+        'get post: {} fail, status code: {}, text: {}'.format(post_id, res.status_code, res.text)
+
+    video_url = None
+    for r in re.finditer('"stream_url_hd": "(.*?)",', res.text):
+        video_url = r.group(1)
+    assert video_url, 'cant not find video_url in page'
+
+    return video_url
