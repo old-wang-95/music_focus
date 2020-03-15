@@ -6,7 +6,7 @@ from music_focus.servers.online_server import OnlineServer
 
 
 def start_offline():
-    interval = 30 * 60
+    interval = 0 * 60
     if len(sys.argv) >= 2:
         interval = sys.argv[1]
     server = OfflineServer(interval)
@@ -16,7 +16,7 @@ def start_offline():
 def start_online():
     address = '0.0.0.0'
     port = 8000
-    process_num = 2
+    process_num = 3
     if len(sys.argv) >= 4:
         address = sys.argv[1]
         port = int(sys.argv[2])
