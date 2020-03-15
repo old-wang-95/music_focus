@@ -5,6 +5,7 @@ from datetime import datetime
 @dataclass
 class Video:
     id: str
+    post_id: int
     user_id: int
     user_name: str
     time: datetime

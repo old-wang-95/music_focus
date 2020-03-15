@@ -221,6 +221,7 @@ def get_videos_by_user(user, use_cache=True):
 
         video = Video(
             id=page_info['media_info']['media_id'],
+            post_id=int(card['mblog']['id']),
             user_id=user.id,
             user_name=user.name,
             time=datetime.fromtimestamp(page_info['media_info']['video_publish_time']),
