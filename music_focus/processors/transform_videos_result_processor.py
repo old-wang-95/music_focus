@@ -11,6 +11,7 @@ class TransformVideosResultProcessor(ProcessorBase):
             for idx, video in enumerate(each_videos):
                 json_result[music_type].append({
                     "id": video.id,
+                    "post_id": video.post_id,
                     "user_id": video.user_id,
                     "user_name": video.user_name,
                     "time": str(video.time),
