@@ -23,7 +23,7 @@ class FetchPostsProcessor(ProcessorBase):
         posts = {}
         for music_type, users in users_config.items():
             posts[music_type] = []
-            for user_id, _ in users:
+            for user_id, user_name in users:
                 retry_time = 0
                 while retry_time <= 3:
                     if retry_time > 0:
@@ -31,7 +31,7 @@ class FetchPostsProcessor(ProcessorBase):
                     try:
                         use_cache = False if retry_time else True
                         # 获取当前用户信息及其微博信息
-                        user = weibo_api.get_user_info(user_id, use_cache)
+                        user = weibo_api.get_user_info(user_id, user_name, use_cache)
                         user_posts = weibo_api.get_posts_by_user(user, use_cache)
                         # 过滤旧微博, 并截图
                         new_user_posts = []  # 用户的新微博

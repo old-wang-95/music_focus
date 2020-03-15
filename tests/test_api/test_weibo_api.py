@@ -11,12 +11,12 @@ class Test(unittest.TestCase):
 
     def test_get_user_info(self):
         print('test_get_user_info~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-        user = weibo_api.get_user_info(1613258127)
+        user = weibo_api.get_user_info(1613258127, 'test')
         print(user)
 
     def test_get_posts_by_user(self):
         print('test_get_posts_by_user~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-        user = User(id=1613258127, name='宋冬野',
+        user = User(id=1613258127, name='宋冬野', nick_name='',
                     gender=Gender.male, verified=True, description='', followers_cnt=0, follow_cnt=0,
                     profile=0, posts=1076031613258127, video=0, super_topic=0, album=0)
         posts = weibo_api.get_posts_by_user(user)
@@ -29,7 +29,7 @@ class Test(unittest.TestCase):
 
     def test_get_focuses_by_user(self):
         print('test_get_focuses_by_user~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-        user = User(id=6724189443, name='新裤子乐队_',
+        user = User(id=6724189443, name='新裤子乐队_', nick_name='',
                     gender=Gender.male, verified=True, description='', followers_cnt=0, follow_cnt=0,
                     profile=0, posts=1076036724189443, video=0, super_topic=0, album=0)
         r = weibo_api.get_focuses_by_user(user)
@@ -37,7 +37,7 @@ class Test(unittest.TestCase):
 
     def test_get_videos_by_user(self):
         print('test_get_videos_by_user~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-        user = User(id=6724189443, name='新裤子乐队_',
+        user = User(id=6724189443, name='新裤子乐队_', nick_name='',
                     gender=Gender.male, verified=True, description='', followers_cnt=0, follow_cnt=0,
                     profile=0, posts=1076036724189443, video=0, super_topic=0, album=0)
         videos = weibo_api.get_videos_by_user(user)

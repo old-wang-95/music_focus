@@ -19,12 +19,14 @@ USER_POSTS_URL_FORMATTER = 'https://m.weibo.cn/u/{}'
 POSTS_CSS_SELECTOR = '.card.m-panel.card9.weibo-member'
 
 
-def get_user_info(user_id, use_cache=True):
+def get_user_info(user_id, user_name, use_cache=True):
     """
     根据用户id, 获取用户相关信息
 
     :param user_id:
     :type user_id: int
+    :param user_name:
+    :type user_name: str
     :param use_cache:
     :type use_cache: bool
     :return:
@@ -44,7 +46,8 @@ def get_user_info(user_id, use_cache=True):
 
     user = User(
         id=user_id,
-        name=data['data']['userInfo']['screen_name'],
+        name=user_name,
+        nick_name=data['data']['userInfo']['screen_name'],
         gender=Gender.male if data['data']['userInfo']['gender'] == 'm' else Gender.female,
         verified=data['data']['userInfo']['verified'],
         description=data['data']['userInfo']['description'],

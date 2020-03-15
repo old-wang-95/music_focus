@@ -15,14 +15,14 @@ class GenFocusProcessor(ProcessorBase):
         # get focuses from weibo api
         for music_type, users in users_config.items():
             focuses[music_type] = []
-            for user_id, _ in users:
+            for user_id, user_name in users:
                 retry_time = 0
                 while retry_time <= 3:
                     if retry_time > 0:
                         logger.info('start to retry, current retry time is: {}'.format(retry_time))
                     try:
                         use_cache = False if retry_time else True
-                        user = weibo_api.get_user_info(user_id, use_cache)
+                        user = weibo_api.get_user_info(user_id, user_name, use_cache)
                         user_focuses = weibo_api.get_focuses_by_user(user, use_cache)
                         focuses[music_type].extend(user_focuses)
                         logger.info('fetch user: {} data success'.format(user_id))

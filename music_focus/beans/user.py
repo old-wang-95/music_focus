@@ -16,6 +16,7 @@ class User:
 
     id: int
     name: str
+    nick_name: str
     gender: Gender
     verified: bool
     description: str
