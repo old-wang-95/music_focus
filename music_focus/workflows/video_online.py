@@ -12,6 +12,6 @@ class VideoOnline(WorkflowBase):
     def load_processors(self):
         self._processors = [
             LoadResultProcessor(),
+            TransformVideosResultProcessor(),
             RefreshVideoUrlProcessor(),
-            TransformVideosResultProcessor()
         ]
