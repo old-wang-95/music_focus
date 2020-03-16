@@ -231,7 +231,7 @@ def get_videos_by_user(user, use_cache=True):
             text=page_info['media_info']['next_title'],
             cover_path=page_info['page_pic']['url'],
             url=page_info['media_info']['stream_url_hd'],
-            view_cnt=page_info['media_info']['online_users_number'],
+            view_cnt=page_info['media_info'].get('online_users_number', 0),
             display_view_cnt=page_info['media_info']['online_users']
         )
         videos.append(video)
