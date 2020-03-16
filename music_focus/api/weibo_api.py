@@ -267,9 +267,7 @@ def get_video_url_by_post(post_id, use_cache=True):
     assert res.status_code == 200, \
         'get post: {} fail, status code: {}, text: {}'.format(post_id, res.status_code, res.text)
 
-    video_url = None
-    for r in re.finditer('"stream_url_hd": "(.*?)",', res.text):
-        video_url = r.group(1)
-    assert video_url, 'cant not find video_url in page'
+    video_urls = re.findall('"stream_url_hd": "(.*?)",', res.text) or re.findall('"stream_url": "(.*?)",', res.text)
+    assert video_urls, 'cant not find video_url in page'
 
-    return video_url
+    return video_urls[0]
