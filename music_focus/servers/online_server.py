@@ -20,16 +20,22 @@ class Handler(tornado.web.RequestHandler):
 
     def get(self, *args, **kwargs):
         result = {
-            'status': 'OK'
+            'status': 'OK',
+            'message': ''
         }
         init_time = time.time()
         try:
-            logger.info('start to run workflow: {}'.format(self.workflow.__class__.__name__))
+            self.workflow_input['music_type'] = music_type = self.get_argument('music_type', 'all')
+            self.workflow_input['max_cnt'] = max_cnt = int(self.get_argument('max_cnt', '1000'))
+            logger.info(
+                'start to run workflow: {} with music_type: {} max_cnt: {}'.format(self.workflow.__class__.__name__,
+                                                                                   music_type, max_cnt))
             result['result'] = self.workflow.run(self.workflow_input)
             logger.info('workflow: {} run finish'.format(self.workflow.__class__.__name__))
         except Exception as e:
             logger.exception('error to run workflow: {}, {}'.format(self.workflow.__class__.__name__, e))
             result['status'] = 'ERROR'
+            result['message'] = str(e)
         result_str = json.dumps(result, ensure_ascii=False, indent=2)
         logger.info('result: {}, cost time: {}s'.format(result_str, time.time() - init_time))
         self.write(result_str)

@@ -5,11 +5,18 @@ class TransformVideosResultProcessor(ProcessorBase):
 
     def run(self, workflow_input, tmp_result, workflow_output):
         videos_result = workflow_input['videos']
+        music_type = workflow_input['music_type']
+        max_cnt = workflow_input['max_cnt']
+
         json_result = {}
-        for music_type, each_videos in videos_result['videos'].items():
-            json_result[music_type] = []
+        for cur_music_type, each_videos in videos_result['videos'].items():
+            if music_type not in ('all', cur_music_type):
+                continue
+            json_result[cur_music_type] = []
             for idx, video in enumerate(each_videos):
-                json_result[music_type].append({
+                if idx >= max_cnt:
+                    break
+                json_result[cur_music_type].append({
                     "id": video.id,
                     "post_id": video.post_id,
                     "user_id": video.user_id,
@@ -21,4 +28,5 @@ class TransformVideosResultProcessor(ProcessorBase):
                     "view_cnt": video.view_cnt,
                     "display_view_cnt": video.display_view_cnt
                 })
+
         workflow_output['result'] = json_result
