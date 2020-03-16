@@ -2,6 +2,7 @@ import gc
 import time
 
 import psutil
+from psutil import NoSuchProcess
 from selenium import webdriver
 
 from music_focus.utils import os_utils
@@ -34,7 +35,10 @@ def find_elements_in_page(url, css_selector, wait_time=5):
     gc.collect()
     for p in psutil.process_iter():
         if 'firefox' in p.name() or 'dbus-daemon' in p.name():
-            p.kill()
+            try:
+                p.kill()
+            except NoSuchProcess:
+                pass
     os_utils.empty_dir('/tmp')  # 防止/tmp目录过大造成硬盘塞满
 
 
