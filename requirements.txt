@@ -1,6 +1,6 @@
 html5lib==1.0.1
 bs4==0.0.1
-requests==2.20.0
+requests==2.31.0
 tornado==4.4.2
 selenium==3.141.0
 psutil==5.7.0
